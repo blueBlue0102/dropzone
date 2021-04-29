@@ -15,6 +15,7 @@ export default class Dropzone extends Emitter {
 
      */
     this.prototype.events = [
+      "paste",
       "drop",
       "dragstart",
       "dragend",
@@ -314,7 +315,12 @@ export default class Dropzone extends Emitter {
     });
 
     const containsFiles = function (e) {
-      if (e.dataTransfer.types) {
+      if ("clipboardData" in e && e.clipboardData.types) {
+        for (var i = 0; i < e.clipboardData.types.length; i++) {
+          if (e.clipboardData.types[i] === "Files") return true;
+        }
+      }
+      if ("dataTransfer" in e && e.dataTransfer.types) {
         // Because e.dataTransfer.types is an Object in
         // IE, we need to iterate like this instead of
         // using e.dataTransfer.types.some()
@@ -374,8 +380,12 @@ export default class Dropzone extends Emitter {
           dragend: (e) => {
             return this.emit("dragend", e);
           },
+          paste: (e) => {
+            noPropagation(e);
+            return this.paste(e);
+          }
         },
-
+        
         // This is disabled right now, because the browsers don't implement it properly.
         // "paste": (e) =>
         //   noPropagation e
