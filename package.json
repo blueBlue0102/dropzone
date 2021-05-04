@@ -28,7 +28,8 @@
   "scripts": {
     "build": "webpack && cp dist/dropzone.js dist/dropzone-amd-module.js && cp dist/min/dropzone.min.js dist/min/dropzone-amd-module.min.js",
     "test": "karma start --single-run --browsers ChromeHeadless test/karma.conf.js",
-    "build-website": "grunt build-website"
+    "build-website": "grunt build-website",
+    "prepare": "npm run build"
   },
   "bugs": {
     "email": "m@tias.me",
